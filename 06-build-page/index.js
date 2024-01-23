@@ -1,6 +1,6 @@
-const fs = require('fs/promises');
-const {createReadStream, createWriteStream} = require('fs');
-const path = require('path');
+const fs = require('node:fs/promises');
+const {createReadStream, createWriteStream} = require('node:fs');
+const path = require('node:path');
 
 const newDirPath = path.join(__dirname, 'project-dist');
 const pathToAssets = path.join(__dirname, 'assets');

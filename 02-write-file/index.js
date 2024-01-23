@@ -1,6 +1,6 @@
-const fs = require('fs');
-const path = require('path');
-const readline = require('readline');
+const fs = require('node:fs');
+const path = require('node:path');
+const readline = require('node:readline');
 
 const stream = fs.createWriteStream(path.join(__dirname, 'text.txt'));
 
