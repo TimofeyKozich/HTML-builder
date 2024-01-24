@@ -8,8 +8,8 @@ const { stdin: input, stdout: output } = require('node:process');
 const rl = readline.createInterface({ input, output });
 
 rl.question('===== Enter text to write it into the file =====\n', (input) => {
-  if (input === "exit") {
-    console.log(`===== Good bye! =====`);
+  if (input === 'exit') {
+    console.log('===== Good bye! =====');
     rl.close();
   } else {
     stream.write(`${input}\n`);
@@ -17,15 +17,15 @@ rl.question('===== Enter text to write it into the file =====\n', (input) => {
 });
 
 rl.on('line', (input) => {
-  if (input === "exit") {
-    console.log(`===== Good bye! =====`);
+  if (input === 'exit') {
+    console.log('===== Good bye! =====');
     rl.close();
   } else {
     stream.write(`${input}\n`);
   }
-}); 
+});
 
 rl.on('SIGINT', () => {
-  console.log(`===== Good bye! =====`);
+  console.log('===== Good bye! =====');
   rl.close();
-}); 
+});

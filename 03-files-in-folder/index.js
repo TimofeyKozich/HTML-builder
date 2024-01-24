@@ -9,7 +9,7 @@ async function filesInfo(pathToFolder) {
       const pathToFile = path.join(pathToFolder, file);
 
       const stats = await fs.stat(pathToFile);
-      if(stats.isFile()) {
+      if (stats.isFile()) {
         const fileName = path.parse(pathToFile).name;
         const fileExtname = path.extname(pathToFile).slice(1);
         const fileSize = stats.size;
@@ -17,7 +17,6 @@ async function filesInfo(pathToFolder) {
         console.log(`${fileName} - ${fileExtname} - ${fileSize}b`);
       }
     }
-
   } catch (err) {
     console.log(err);
   }

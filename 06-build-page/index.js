@@ -1,5 +1,5 @@
 const fs = require('node:fs/promises');
-const {createReadStream, createWriteStream} = require('node:fs');
+const { createReadStream, createWriteStream } = require('node:fs');
 const path = require('node:path');
 
 const newDirPath = path.join(__dirname, 'project-dist');
@@ -10,7 +10,6 @@ const pathToAssetsCopy = path.join(newDirPath, 'assets');
 async function createDir(pathToDir) {
   try {
     await fs.mkdir(pathToDir, { recursive: true });
-
   } catch (err) {
     console.log(err);
   }
@@ -27,12 +26,10 @@ async function copyDir(pathToOriginal, pathToCopy) {
       if (stats.isDirectory()) {
         await createDir(pathToFileCopy);
         await copyDir(pathToFile, pathToFileCopy);
-
       } else {
         await fs.copyFile(pathToFile, pathToFileCopy);
       }
     }
-
   } catch (err) {
     console.log(err);
   }
@@ -45,7 +42,7 @@ async function createBundle(pathToFilesDir, pathToBundle) {
 
     for (let file of files) {
       const pathToFile = path.join(pathToFilesDir, file);
-      const rs = createReadStream(pathToFile, {encoding: 'utf-8'});
+      const rs = createReadStream(pathToFile, { encoding: 'utf-8' });
       rs.pipe(ws);
     }
   } catch (err) {
@@ -55,31 +52,41 @@ async function createBundle(pathToFilesDir, pathToBundle) {
 
 async function createHTML() {
   try {
-    const template = await fs.readFile(path.join(__dirname, 'template.html'), {encoding: 'utf-8'});
-
-    async function replaceComponent(temp) {
-      const firstPart = temp.slice(0, temp.indexOf('{{')).trim();
-      const secondPart = temp.slice(temp.indexOf('}}') + 2).trim();
-
-      const nameOfComponent = temp.slice(temp.indexOf('{{') + 2, temp.indexOf('}}'));
-      const component = await fs.readFile(path.join(__dirname, 'components', `${nameOfComponent}.html`), {encoding: 'utf-8'});
-
-      let newTemp = `${firstPart}\n${component.trim()}\n${secondPart}`;
-
-      if (newTemp.includes('{{')) {
-        newTemp = await replaceComponent(newTemp)
-      }
-
-      return newTemp;
-    }
+    const template = await fs.readFile(path.join(__dirname, 'template.html'), {
+      encoding: 'utf-8',
+    });
 
     replaceComponent(template);
 
-    await fs.writeFile(path.join(newDirPath, 'index.html'), await replaceComponent(template));
-
+    await fs.writeFile(
+      path.join(newDirPath, 'index.html'),
+      await replaceComponent(template),
+    );
   } catch (err) {
     console.log(err);
   }
+}
+
+async function replaceComponent(temp) {
+  const firstPart = temp.slice(0, temp.indexOf('{{')).trim();
+  const secondPart = temp.slice(temp.indexOf('}}') + 2).trim();
+
+  const nameOfComponent = temp.slice(
+    temp.indexOf('{{') + 2,
+    temp.indexOf('}}'),
+  );
+  const component = await fs.readFile(
+    path.join(__dirname, 'components', `${nameOfComponent}.html`),
+    { encoding: 'utf-8' },
+  );
+
+  let newTemp = `${firstPart}\n${component.trim()}\n${secondPart}`;
+
+  if (newTemp.includes('{{')) {
+    newTemp = await replaceComponent(newTemp);
+  }
+
+  return newTemp;
 }
 
 async function buildPage() {

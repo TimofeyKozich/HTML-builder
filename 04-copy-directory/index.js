@@ -15,12 +15,10 @@ async function copyFiles(pathToOriginal, pathToCopy) {
 
       if (stats.isDirectory()) {
         await copyFiles(pathToFile, pathToFileCopy);
-
       } else {
         await fs.copyFile(pathToFile, pathToFileCopy);
       }
     }
-
   } catch (err) {
     console.log(err);
   }
@@ -31,4 +29,4 @@ async function copyDir() {
   await copyFiles(pathToFilesFolder, pathToCopyFolder);
 }
 
-copyDir()
+copyDir();
