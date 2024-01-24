@@ -16,9 +16,6 @@ async function createDir(pathToDir) {
   }
 }
 
-createDir(newDirPath);
-createDir(pathToAssetsCopy);
-
 async function copyDir(pathToOriginal, pathToCopy) {
   try {
     const files = await fs.readdir(pathToOriginal);
@@ -41,8 +38,6 @@ async function copyDir(pathToOriginal, pathToCopy) {
   }
 }
 
-copyDir(pathToAssets, pathToAssetsCopy);
-
 async function createBundle(pathToFilesDir, pathToBundle) {
   try {
     const files = await fs.readdir(pathToFilesDir);
@@ -57,8 +52,6 @@ async function createBundle(pathToFilesDir, pathToBundle) {
     console.log(err);
   }
 }
-
-createBundle(pathToStyles, path.join(newDirPath, 'style.css'));
 
 async function createHTML() {
   try {
@@ -89,4 +82,13 @@ async function createHTML() {
   }
 }
 
-createHTML();
+async function buildPage() {
+  await fs.rm(newDirPath, { recursive: true, force: true });
+  await createDir(newDirPath);
+  await createDir(pathToAssetsCopy);
+  await copyDir(pathToAssets, pathToAssetsCopy);
+  await createBundle(pathToStyles, path.join(newDirPath, 'style.css'));
+  await createHTML();
+}
+
+buildPage();
